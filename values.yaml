@@ -1,0 +1,14 @@
+# Values needed for the TOE
+toe:
+  # The deviceID is the unique identifier for the device within a TeamSpace
+  deviceID: ""
+  # The teamSpace is the unique identifier for the TeamSpace the device is part of
+  teamSpace: ""
+  # The pullSecret is the TeamSpace private secret used to pull the container images
+  pullSecret: ""
+  # The gcpProject is the GCP project the device is part of, but for production this is always "teknoir"
+  gcpProject: "teknoir"
+  # The configHostDir is the directory where the configuration files are stored
+  configHostPath: "/etc/teknoir"
+  # The default namespace to use for Teknoir Plaform resources
+  defaultNamespace: "default"

@@ -1,0 +1,19 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority-mqtt
+  namespace: {{ .Release.Namespace }}
+value: 900000000
+globalDefault: false
+description: "This priority class should be used for mqtt service pods only."
+
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority-toe
+  namespace: {{ .Release.Namespace }}
+value: 1000000000
+globalDefault: false
+description: "This priority class should be used for toe service pods only."

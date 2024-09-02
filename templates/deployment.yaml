@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt
+  template:
+    metadata:
+      labels:
+        app: mqtt
+    spec:
+      priorityClassName: high-priority-mqtt
+      serviceAccountName: teknoir
+      containers:
+        - name: mqtt
+          image: emqx/emqx-edge:latest
+          imagePullPolicy: Always
+          env:
+            - name: EMQX_MQTT__MAX_PACKET_SIZE
+              value: 1MB
+          ports:
+            - containerPort: 1883
+            - containerPort: 18083
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "150m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: toe
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        teknoir.org/app: toe
+        app: toe
+        control-plane: controller-manager
+    spec:
+      priorityClassName: high-priority-toe
+      containers:
+        - args:
+            - --health-probe-bind-address=:8081
+            - --metrics-bind-address=127.0.0.1:8080
+          env:
+            - name: CLIENT_ID
+              value: "{{ .Values.toe.deviceID }}"
+            - name: TOE_PROJECT
+              value: "{{ .Values.toe.gcpProject }}"
+            - name: TOE_IOT_REGISTRY
+              value: "{{ .Values.toe.teamSpace }}"
+            - name: TOE_DEVICE
+              value: "{{ .Values.toe.deviceID }}"
+          volumeMounts:
+            - name: toe-volume
+              mountPath: /etc/teknoir
+          command:
+            - /manager
+          image: us-docker.pkg.dev/teknoir/gcr.io/toe:toe_v2
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: toe
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: teknoir-controller-manager
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: toe-volume
+          hostPath:
+            # directory location on host
+            path: "{{ .Values.toe.configHostPath }}"

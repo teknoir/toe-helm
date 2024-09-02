@@ -1,0 +1,2 @@
+1. The TOE is installed in the namespace: {{ .Release.Namespace }}
+2. The default namespace for Teknoir resources is: {{ .Values.toe.defaultNamespace }}
