@@ -94,7 +94,7 @@ EOF
   sudo chmod 440 ${CONFIG_PATH}/values.yaml
 fi
 
-export CHART_PATH=$(pwd)
+export CHART_PATH=$(pwd)/charts/TOE
 pushd ${CONFIG_PATH}
 helm upgrade --install --kube-context=${TARGET_CONTEXT} --namespace=${TARGET_NAMESPACE} --create-namespace -f values.yaml toe ${CHART_PATH}
 popd
