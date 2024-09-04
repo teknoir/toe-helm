@@ -33,7 +33,7 @@ case $key in
     shift # past value
     ;;
     -i|--install-only)
-    export INSTALL_ONLY=1
+    export INSTALL_ONLY="1"
     shift # past argument
     ;;
     -h|--help|*)
@@ -46,7 +46,12 @@ done
 export CONFIG_PATH=$(pwd)/tmp
 mkdir -p ${CONFIG_PATH}
 
-if [ ${INSTALL_ONLY} != 1 ]; then
+if [ "$TARGET_CONTEXT" == "gke_teknoir-poc_us-central1-c_teknoir-dev-cluster" ] || [ "$TARGET_CONTEXT" == "gke_teknoir_us-central1-c_teknoir-cluster" ]; then
+  echo "TARGET_CONTEXT should not be DEV or PROD"
+  exit 1
+fi
+
+if [ "${INSTALL_ONLY}" != "1" ]; then
   export ZONE=us-central1-c
   export _GCP_PROJECT=$(if [ "$CONTEXT" == "gke_teknoir-poc_us-central1-c_teknoir-dev-cluster" ]; then echo "teknoir-poc"; else echo "teknoir"; fi)
   export _DOMAIN=$([ "$_GCP_PROJECT" == 'teknoir' ] && echo "teknoir.cloud" || echo "teknoir.info")
