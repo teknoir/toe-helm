@@ -58,7 +58,7 @@ if [ "${INSTALL_ONLY}" != "1" ]; then
   export _IOT_REGISTRY=${NAMESPACE}
   export _DEVICE_ID=${DEVICE}
 
-  export DEVICE_MANIFEST="$(kubectl --context $CONTEXT -n $NAMESPACE get device $DEVICE -o yaml)"
+  export DEVICE_MANIFEST="$(kubectl --context $CONTEXT -n $NAMESPACE get device.teknoir.org $DEVICE -o yaml)"
   if [ -z ${DEVICE_MANIFEST+x} ] || [ "${DEVICE_MANIFEST}" = "" ]; then
     echo "DEVICE_MANIFEST not found"
     exit 1
