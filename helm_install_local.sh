@@ -36,6 +36,10 @@ case $key in
     export INSTALL_ONLY="1"
     shift # past argument
     ;;
+    --dry-run)
+    export DRY_RUN=1
+    shift # past argument
+    ;;
     -h|--help|*)
     echo "$0 -c(--context) <kubectl-context> -n(--namespace) <namespace> -d(--device) <device-name> -t(--targetcontext) <kubectl-context> -m(--targetnamespace) <namespace>"
     exit 0
@@ -53,8 +57,8 @@ fi
 
 if [ "${INSTALL_ONLY}" != "1" ]; then
   export ZONE=us-central1-c
-  export _GCP_PROJECT=$(if [ "$CONTEXT" == "gke_teknoir-poc_us-central1-c_teknoir-dev-cluster" ]; then echo "teknoir-poc"; else echo "teknoir"; fi)
-  export _DOMAIN=$([ "$_GCP_PROJECT" == 'teknoir' ] && echo "teknoir.cloud" || echo "teknoir.info")
+  export _GCP_PROJECT=$(if [[ "$CONTEXT" == "gke_teknoir-poc_us-central1-c_teknoir-dev-cluster" || "$CONTEXT" == "teknoir-poc" ]]; then echo "teknoir-poc"; else echo "teknoir"; fi)
+  export _DOMAIN=$([ "$_GCP_PROJECT" == 'teknoir' ] && echo "teknoir.cloud" || echo "teknoir.dev")
   export _IOT_REGISTRY=${NAMESPACE}
   export _DEVICE_ID=${DEVICE}
 
@@ -101,5 +105,9 @@ fi
 
 export CHART_PATH=$(pwd)/charts/TOE
 pushd ${CONFIG_PATH}
-helm upgrade --install --kube-context=${TARGET_CONTEXT} --namespace=${TARGET_NAMESPACE} --create-namespace -f values.yaml toe ${CHART_PATH}
+if [ "${DRY_RUN}" == "1" ]; then
+  helm upgrade --install --dry-run --kube-context=${TARGET_CONTEXT} --namespace=${TARGET_NAMESPACE} --create-namespace -f values.yaml toe ${CHART_PATH}
+else
+  helm upgrade --install --kube-context=${TARGET_CONTEXT} --namespace=${TARGET_NAMESPACE} --create-namespace -f values.yaml toe ${CHART_PATH}
+fi
 popd
