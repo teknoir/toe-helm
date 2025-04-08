@@ -27,12 +27,7 @@ spec:
             - containerPort: 1883
             - containerPort: 18083
           resources:
-            requests:
-              memory: "128Mi"
-              cpu: "150m"
-            limits:
-              memory: "512Mi"
-              cpu: "1000m"
+            {{- toYaml $.Values.mqtt.resources | nindent 12 }}
 
 ---
 apiVersion: apps/v1
@@ -93,12 +88,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
-            limits:
-              cpu: 500m
-              memory: 512Mi
-            requests:
-              cpu: 10m
-              memory: 64Mi
+            {{- toYaml $.Values.toe.resources | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

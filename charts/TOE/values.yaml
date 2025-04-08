@@ -12,3 +12,22 @@ toe:
   configHostPath: "/etc/teknoir"
   # The default namespace to use for Teknoir Plaform resources
   defaultNamespace: "default"
+  # The resources for the TOE deployment
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+# Defaults
+mqtt:
+  #The resources for the MQTT deployment
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
