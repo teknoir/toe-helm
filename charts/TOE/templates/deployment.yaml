@@ -20,9 +20,9 @@ spec:
         - name: mqtt
           image: emqx/emqx-edge:latest
           imagePullPolicy: Always
-          env:
-            - name: EMQX_MQTT__MAX_PACKET_SIZE
-              value: 1MB
+          envFrom:
+            - configMapRef:
+                name: mqtt
           ports:
             - containerPort: 1883
             - containerPort: 18083
@@ -58,15 +58,9 @@ spec:
         - args:
             - --health-probe-bind-address=:8081
             - --metrics-bind-address=127.0.0.1:8080
-          env:
-            - name: CLIENT_ID
-              value: "{{ .Values.toe.deviceID }}"
-            - name: TOE_PROJECT
-              value: "{{ .Values.toe.gcpProject }}"
-            - name: TOE_IOT_REGISTRY
-              value: "{{ .Values.toe.teamSpace }}"
-            - name: TOE_DEVICE
-              value: "{{ .Values.toe.deviceID }}"
+          envFrom:
+            - configMapRef:
+                name: toe
           volumeMounts:
             - name: toe-volume
               mountPath: /etc/teknoir

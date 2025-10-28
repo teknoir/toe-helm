@@ -21,8 +21,23 @@ toe:
       cpu: 10m
       memory: 64Mi
 
-# Defaults
+  # TOE Default Configuration options
+  offlineMode: "false"
+  debug: "false"
+  edgeMqttMaxPayloadSize: "1000000"
+  edgeMqttQueueLimit: "1000"
+  edgeMqttCleanSession: "true"
+  cloudMqttMaxPayloadSize: "1000000"
+  cloudMqttQueueLimit: "1000"
+  cloudMqttCleanSession: "true"
+  publishK8sEvents: "true"
+  usePublishQueues: "true"
+
+# Defaults for the EMQX Broker
 mqtt:
+  # The maximum packet size for MQTT messages
+  maxPacketSize: 1MB
+
   #The resources for the MQTT deployment
   resources:
     limits:
