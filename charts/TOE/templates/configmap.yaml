@@ -19,7 +19,7 @@ data:
   TOE_PROJECT: "{{ .Values.toe.gcpProject }}"
   TOE_IOT_REGISTRY: "{{ .Values.toe.teamSpace }}"
   TOE_DEVICE: "{{ .Values.toe.deviceID }}"
-  TOE_DOMAIN: ".{{ .Values.toe.domain }}"
+  TOE_DOMAIN: "{{ .Values.toe.domain }}"
   OFFLINE_MODE: "{{ .Values.toe.offlineMode }}"
   DEBUG: "{{ .Values.toe.debug }}"
   EDGE_MQTT_MAX_PAYLOAD_SIZE: "{{ .Values.toe.edgeMqttMaxPayloadSize }}"
