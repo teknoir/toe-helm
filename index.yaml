@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   TOE:
   - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2026-09-03T07:08:09.824673239Z"
+    description: A Helm chart for Teknoir Orkestration Engine(TOE)
+    digest: 913a822d996f2531167de7d81b5b72773994cb5b2a1ac075d84db71be3207d06
+    name: TOE
+    type: application
+    urls:
+    - https://github.com/teknoir/toe-helm/releases/download/TOE-2.1.1/TOE-2.1.1.tgz
+    version: 2.1.1
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2025-10-28T08:14:49.402375384Z"
     description: A Helm chart for Teknoir Orkestration Engine(TOE)
@@ -66,4 +76,4 @@ entries:
     urls:
     - https://github.com/teknoir/toe-helm/releases/download/TOE-2.0.1/TOE-2.0.1.tgz
     version: 2.0.1
-generated: "2025-10-28T08:14:49.402413125Z"
+generated: "2026-09-03T07:08:09.824717301Z"
