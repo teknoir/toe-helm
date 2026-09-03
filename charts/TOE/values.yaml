@@ -4,6 +4,8 @@ toe:
   deviceID: ""
   # The teamSpace is the unique identifier for the TeamSpace the device is part of
   teamSpace: ""
+  # The domain is the base domain name for the cloud instance of the Teknoir platform
+  domain: ""
   # The pullSecret is the TeamSpace private secret used to pull the container images
   pullSecret: ""
   # The gcpProject is the GCP project the device is part of, but for production this is always "teknoir"
