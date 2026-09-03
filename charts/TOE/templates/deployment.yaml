@@ -66,7 +66,7 @@ spec:
               mountPath: /etc/teknoir
           command:
             - /manager
-        image: docker.io/tekn0ir/toe:toe_v4
+          image: docker.io/tekn0ir/toe:toe_v4
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
